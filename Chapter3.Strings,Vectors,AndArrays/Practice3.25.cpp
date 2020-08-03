@@ -3,9 +3,6 @@
 using namespace std;
 int main(){
     int temp;
-    int a[3] = { 1, 2, 3 };
-    int b[3];
-    b = a;
     vector<int> v(11, 0);
     auto it = v.begin();
     while (cin >> temp)
