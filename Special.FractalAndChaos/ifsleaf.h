@@ -10,13 +10,14 @@ class IfsLeaf;
 
 class IfsLeaf{
 public:
-    IfsLeaf(const int &, const int &, const int &,QPainter *);
+    IfsLeaf(const int &iW, const int &iH, const int &in,QPainter *ipainter)
+        :W(iW), H(iH), n(in), painter(ipainter), initPoint(iW/2, iH/2){}
     void draw();
 
 private:
-    int n;
-    int W;
-    int H;
+    int n;  // number of points
+    int W;  // windows width
+    int H;  //windows height
     double parameter[4][6]= {
         {0.85, 0.04, -0.04, 0.85, 0.08, 0.18},
         {0, 0, 0, 0.16, 0.5, 0},
@@ -26,8 +27,9 @@ private:
     int probability[4] = {85, 1, 7, 7};
     QPointF initPoint;
     QPainter *painter;
+
     void getNextPoint();
-    int getRandom();
+    int getRandom() const;
 };
 
 #endif // IFSLEAF_H

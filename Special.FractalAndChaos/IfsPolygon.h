@@ -12,24 +12,28 @@ class IfsPolygon;
 
 class IfsPolygon{
 public:
-    IfsPolygon(int n, int W, int H, QPainter *);
-    ~IfsPolygon();
-    void drawInit();
+    IfsPolygon(const int &iW, const int &iH, const int &in, QPainter *ipainter)
+        :W(iW), H(iH), n(in), painter(ipainter){
+        for(int i = n; i--;) probability.push_back(i + 1);
+        getRefPoint();
+    }
+    void drawInit() const;
     void drawNext();
     void drawPoints(const int);
-    void setProbability(std::initializer_list<int>);
+    void setProbability(const std::initializer_list<int> &);
 private:
     int W;  // Windows Width
     int H;  // Windows Height
     int n;  // N-Line Polygon
-    int *probability;    // The probability of each points
-    int sum;
+    std::vector<int> probability;    // The probability of each points
+    double step = 0.5;
     QPoint initPoint = QPoint(1, 1);
-    QPointF *refPoint;
+    std::vector<QPointF> refPoint;
     QPainter *painter;
+
     void getRefPoint();
     void getNextPoint();
-    int getRandom();
+    int getRandom() const;
 };
 
 #endif // IFSPOLYGON_H
