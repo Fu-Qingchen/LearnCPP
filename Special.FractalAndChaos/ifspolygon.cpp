@@ -17,8 +17,8 @@ void IfsPolygon::getRefPoint(){
 void IfsPolygon::getNextPoint(){
     int temp = getRandom();
     std::cout << temp << " ";
-    double x = (initPoint.x() + refPoint[temp].x())/2;
-    double y = (initPoint.y() + refPoint[temp].y())/2;
+    double x = (initPoint.x()*(1-step) + refPoint[temp].x()*step);
+    double y = (initPoint.y()*(1-step) + refPoint[temp].y()*step);
     QPoint thisPoint(x, y);
     painter->drawPoint(thisPoint);
     initPoint = thisPoint;

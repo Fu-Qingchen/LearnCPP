@@ -55,7 +55,7 @@ void Widget::paintEvent(QPaintEvent *event){
     painter->setPen(pen);
 
     // Test IfsPolygon
-    IfsPolygon *polygon = new IfsPolygon(W, H, 6, painter);
+    IfsPolygon *polygon = new IfsPolygon(W, H, 5, painter);
     polygon->setProbability({1, 2, 3, 4, 5, 6});
     polygon->drawInit();
     polygon->drawPoints(100000);

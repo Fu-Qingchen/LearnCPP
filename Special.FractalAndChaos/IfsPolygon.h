@@ -13,7 +13,7 @@ class IfsPolygon;
 class IfsPolygon{
 public:
     IfsPolygon(const int &iW, const int &iH, const int &in, QPainter *ipainter)
-        :W(iW), H(iH), n(in), painter(ipainter){
+        :W(iW), H(iH), n(in), painter(ipainter) {
         for(int i = n; i--;) probability.push_back(i + 1);
         getRefPoint();
     }
