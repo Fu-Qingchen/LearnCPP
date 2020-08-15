@@ -1,0 +1,3 @@
+Manim is an animation engine for explanatory math videos. It's used to create precise animations programmatically, as seen in the videos at 3Blue1Brown.
+
+This repository contains the version of manim used by 3Blue1Brown. There is also a community maintained version at https://github.com/ManimCommunity/manim/. To get help or to join the development effort, please join the discord.
