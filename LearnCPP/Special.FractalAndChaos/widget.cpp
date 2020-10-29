@@ -17,7 +17,6 @@ Widget::~Widget()
 {
     delete ui;
 }
-
 class Triangle{
 public:
     Triangle(QPoint last);
