@@ -26,14 +26,10 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += main.cpp\
         widget.cpp
 
-HEADERS  += widget.h
+HEADERS  += widget.h \
+    math_operator_interface.h
 
 FORMS    += widget.ui
-
-win32: LIBS += -L$$PWD/./ -lmath_operator
-
-INCLUDEPATH += $$PWD/.
-DEPENDPATH += $$PWD/.
 
 RESOURCES += \
     resource.qrc

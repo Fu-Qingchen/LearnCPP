@@ -1,5 +1,5 @@
 /*****************************************************
-** Copyright(C), 2015-2025, Baodi Technology.
+** Copyright(C), 2015-2025, Fu_Qingchen.
 ** Version:     alpha
 ** Author:      Fu_Qingchen
 ** Date:        2021/3/6
@@ -8,14 +8,17 @@
 
 #include "widget.h"
 #include "ui_widget.h"
-#include "math_operator.h"
 #include <QKeyEvent>
+#include <QPluginLoader>
+#include <QDir>
+#include <QDebug>
 
 Widget::Widget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Widget)
 {
     ui->setupUi(this);
+    loadPlugins();
 }
 
 Widget::~Widget()
@@ -34,8 +37,10 @@ void Widget::updateUi()
     }
     if (function.at( size - 1) == ')' || function.at( size - 1).isDigit())
     {
-        CMath_operator op(function);
-        switch (op.isFunctionVaild()) {
+        qDebug() << "function:" << function;
+        m_mathInterface->setString(function);
+        qDebug() << "finish set string";
+        switch (m_mathInterface->isFunctionVaild()) {
         case -1:
             ui->labelResult->setText("Division by 0 error");
             break;
@@ -43,12 +48,27 @@ void Widget::updateUi()
             ui->labelResult->setText("-");
             break;
         case 1:
-            ui->labelResult->setText(QString::number(op.m_result, 'g', 16));
+            ui->labelResult->setText(QString::number(m_mathInterface->getResult(), 'g', 16));
             break;
         default:
             break;
         }
     }
+}
+
+// https://doc.qt.io/qt-5/qtwidgets-tools-echoplugin-example.html
+void Widget::loadPlugins()
+{
+    QPluginLoader pluginLoader("D:/Users/lenovo/Documents/GitHub/LearnCS/QTProject/Calculator/calculator/math_operator.dll");
+    QObject *plugin = pluginLoader.instance();
+    if (plugin) {
+        m_mathInterface = qobject_cast<CMathOperatorInterface *>(plugin);
+        if (m_mathInterface){
+            return ;
+        }
+        pluginLoader.unload();
+    }
+    qDebug() << "load plugin success";
 }
 
 void Widget::on_pushButtonDot_clicked()
@@ -180,10 +200,10 @@ void Widget::on_pushButton9_clicked()
 
 void Widget::on_pushButtonEnter_clicked()
 {
-    CMath_operator op(function);
-    if (op.isFunctionVaild() == 1)
+    m_mathInterface->setString(function);
+    if (m_mathInterface->isFunctionVaild() == 1)
     {
-        function = QString::number(op.m_result);
+        function = QString::number(m_mathInterface->getResult());
     }
     updateUi();
 }

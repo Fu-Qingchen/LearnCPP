@@ -1,5 +1,5 @@
 /*****************************************************
-** Copyright(C), 2015-2025, Baodi Technology.
+** Copyright(C), 2015-2025, Fu_Qingchen.
 ** Version:     alpha
 ** Author:      Fu_Qingchen
 ** Date:        2021/3/6
@@ -10,6 +10,7 @@
 #define WIDGET_H
 
 #include <QWidget>
+#include "math_operator_interface.h"
 
 namespace Ui {
 class Widget;
@@ -67,6 +68,8 @@ private slots:
 private:
     Ui::Widget *ui;
 
+    CMathOperatorInterface *m_mathInterface;
+
     QString function;
 
     int numberLOP = 0;
@@ -74,6 +77,8 @@ private:
     void updateUi();
 
     void keyPressEvent(QKeyEvent *event);
+
+    void loadPlugins();
 };
 
 #endif // WIDGET_H

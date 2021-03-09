@@ -1,5 +1,5 @@
 /*****************************************************
-** Copyright(C), 2015-2025, Baodi Technology.
+** Copyright(C), 2015-2025, Fu_Qingchen.
 ** Version:     alpha
 ** Author:      Fu_Qingchen
 ** Date:        2021/3/5
@@ -10,33 +10,41 @@
 #define MATH_OPERATOR_H
 
 #include "math_operator_global.h"
+#include "math_operator_interface.h"
+#include <QtPlugin>
 #include <QString>
+#include <fstream>
 
-enum EnumOperator
+class MATH_OPERATORSHARED_EXPORT CMath_operator : public QObject, public CMathOperatorInterface
 {
-    EnumAdd = 0, EnumSub, EnumMul, EnumDiv, EnumL_P, EnumR_P, EnumEOE
-};
+    Q_OBJECT
+    Q_PLUGIN_METADATA(IID "MathDLL/V1.0" FILE "")
+    Q_INTERFACES(CMathOperatorInterface)
 
-class MATH_OPERATORSHARED_EXPORT CMath_operator
-{
 public:
-    CMath_operator(QString);
+    CMath_operator();
 
-    double m_result;
+    ~CMath_operator()
+    {
+        outfile.close();
+    }
 
-    /*************************************************
-    **Function:       isFunctionVaild
-    **Description:    判断传入的字符串是否可以进行运算
-    **Input:          m_function:将要运算的表达式
-    **Return:         true: 可以进行运算 false: 不能进行运算
-    **Others:         假设传入的字符串是正确的
-    *************************************************/
+//    CMath_operator(QString);
+
     int isFunctionVaild();
+
+    double getResult();
+
+    void setString(QString);
 
 private:
     // 判断表达式是否可行
     // 1->可行  0->语法错误 -1->除0
     int m_vaild = 0;
+
+    double m_result;
+
+    QString m_function;
 
     // 关系运算符的优先级，用于实现 calculate 函数
     const char pri[7][7] = {
@@ -51,7 +59,10 @@ private:
         //                栈     顶
     };
 
-    QString m_function;
+    enum EnumOperator
+    {
+        EnumAdd = 0, EnumSub, EnumMul, EnumDiv, EnumL_P, EnumR_P, EnumEOE
+    };
 
     /*************************************************
     **Function:       calculation
@@ -68,6 +79,8 @@ private:
     EnumOperator char2rank(char);
 
     double calcu(double, char, double);
+
+    std::ofstream outfile;
 
 };
 

@@ -25,7 +25,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += math_operator.cpp
 
 HEADERS += math_operator.h\
-        math_operator_global.h
+        math_operator_global.h \
+    math_operator_interface.h
 
 unix {
     target.path = /usr/lib

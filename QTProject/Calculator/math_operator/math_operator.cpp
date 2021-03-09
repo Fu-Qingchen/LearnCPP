@@ -1,27 +1,41 @@
+/*****************************************************
+** Copyright(C), 2015-2025, Fu_Qingchen.
+** Version:     alpha
+** Author:      Fu_Qingchen
+** Date:        2021/3/5
+** Description: 实现计算器的算术操作
+*****************************************************/
+
 #include "math_operator.h"
 #include <stack>
 #include <fstream>
+#include <QDebug>
 
 using namespace std;
 
-CMath_operator::CMath_operator(QString function)
+CMath_operator::CMath_operator()
 {
-    if(function.at(0) == '-')
-    {
-        m_function = "0" + function;
-    }
-    else
-    {
-        m_function = function;
-    }
-
-    m_result = calculation();
+    outfile.open("debugMathOperator.txt");
+    outfile << "create math operator" << endl;
 }
+
+//CMath_operator::CMath_operator(QString function)
+//{
+//    outfile.open("debugMathOperator.txt");
+//    outfile << "create math operator" << endl;
+//    if(function.at(0) == '-')
+//    {
+//        m_function = "0" + function;
+//    }
+//    else
+//    {
+//        m_function = function;
+//    }
+//    m_result = calculation();
+//}
 
 double CMath_operator::calculation()
 {
-    ofstream outfile;
-    outfile.open("deBug.txt", ofstream::out);
     stack<double> numberStack;
     stack<char> operatorStack;
     operatorStack.push('\0');   // 用于栈空时的比较
@@ -42,9 +56,6 @@ double CMath_operator::calculation()
             negative_flag = 1;
             continue;
         }   // 如果操作符是数字则读取数字并入栈
-
-                outfile << "operator: " << operatorStack.size() << endl;
-                outfile << "number  : " << numberStack.size() << endl;
 
         // 处理操作符
         char op = operatorStack.top();
@@ -70,7 +81,6 @@ double CMath_operator::calculation()
             num2 = numberStack.top();
             numberStack.pop();
             numberStack.push(calcu(num1, op, num2));
-            outfile << numberStack.top() << endl;
             break;
         case '=':   // 右括号和左括号相遇
             operatorStack.pop();
@@ -87,7 +97,6 @@ double CMath_operator::calculation()
         default:
             break;
         }
-        outfile << "-----------------" << endl;
     }
     outfile.close();
 
@@ -104,7 +113,7 @@ char CMath_operator::compare(char curr, char stackTop)
     return pri[char2rank(curr)][char2rank(stackTop)];
 }
 
-EnumOperator CMath_operator::char2rank(char opera)
+CMath_operator::EnumOperator CMath_operator::char2rank(char opera)
 {
     switch (opera)
     {
@@ -141,9 +150,29 @@ double CMath_operator::calcu(double num1, char op, double num2)
 
 int CMath_operator::isFunctionVaild()
 {
-    if(!m_vaild)
-    {
-        calculation();
-    }
     return m_vaild;
+}
+
+double CMath_operator::getResult()
+{
+    calculation();
+    return m_result;
+}
+
+void CMath_operator::setString(QString function)
+{
+    outfile << "CMathOperator Input: " << function.toStdString() << endl;
+    if(function.at(0) == '-')
+    {
+        m_function = "0" + function;
+    }
+    else
+    {
+        m_function = function;
+    }
+    qDebug() << "CMathOperator: " << m_function;
+    outfile << "CMathOperator: " << m_function.toStdString() << endl;
+    m_result = calculation();
+    outfile << "calculation done" << endl;
+    qDebug() << "calculation done";
 }
