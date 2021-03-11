@@ -11,6 +11,7 @@
 
 #include <QWidget>
 #include "math_operator_interface.h"
+#include  "time_thread_interface.h"
 
 namespace Ui {
 class Widget;
@@ -65,10 +66,14 @@ private slots:
 
     void on_pushButtonBack_clicked();
 
+    void timerOut(QString);
+
 private:
     Ui::Widget *ui;
 
     CMathOperatorInterface *m_mathInterface;
+
+    CTimeThreadInterface *m_timeInterface;
 
     QString function;
 
@@ -78,7 +83,9 @@ private:
 
     void keyPressEvent(QKeyEvent *event);
 
-    void loadPlugins();
+    void loadMathPlugins();
+
+    void loadTimePlugins();
 };
 
 #endif // WIDGET_H

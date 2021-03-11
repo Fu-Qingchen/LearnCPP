@@ -1,3 +1,0 @@
-create math operator
-CMathOperator Input: 2
-CMathOperator: 2

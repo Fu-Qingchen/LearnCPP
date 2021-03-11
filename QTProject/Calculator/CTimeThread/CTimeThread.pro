@@ -1,15 +1,15 @@
 #-------------------------------------------------
 #
-# Project created by QtCreator 2021-03-05T20:26:29
+# Project created by QtCreator 2021-03-09T20:35:12
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       -= gui
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+TARGET = CTimeThread
+TEMPLATE = lib
 
-TARGET = calculator
-TEMPLATE = app
+DEFINES += CTIMETHREAD_LIBRARY
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked as deprecated (the exact warnings
@@ -22,16 +22,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
+SOURCES += time_thread.cpp
 
-SOURCES += main.cpp\
-        widget.cpp
+HEADERS += time_thread.h\
+    time_thread_interface.h \
+    time_thread_global.h
 
-HEADERS  += widget.h \
-    math_operator_interface.h \
-    time_thread_interface.h
-
-FORMS    += widget.ui
-
-RESOURCES += \
-    resource.qrc
-
+unix {
+    target.path = /usr/lib
+    INSTALLS += target
+}

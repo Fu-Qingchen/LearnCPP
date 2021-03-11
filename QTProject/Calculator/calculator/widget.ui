@@ -21,7 +21,7 @@
   </property>
   <property name="font">
    <font>
-    <family>CMU Serif</family>
+    <family>Times New Roman</family>
     <pointsize>18</pointsize>
    </font>
   </property>
@@ -49,10 +49,22 @@
     <number>5</number>
    </property>
    <item>
-    <layout class="QVBoxLayout" name="verticalLayoutMain" stretch="3,2,4">
+    <layout class="QVBoxLayout" name="verticalLayoutMain" stretch="0,3,2,4">
      <property name="spacing">
       <number>0</number>
      </property>
+     <item>
+      <widget class="QLabel" name="label">
+       <property name="font">
+        <font>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>当前时间：</string>
+       </property>
+      </widget>
+     </item>
      <item>
       <layout class="QVBoxLayout" name="verticalLayoutKey" stretch="2,5">
        <property name="topMargin">
@@ -72,7 +84,7 @@
           </font>
          </property>
          <property name="text">
-          <string>Function</string>
+          <string>表达式</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -87,7 +99,7 @@
           </font>
          </property>
          <property name="text">
-          <string>Result</string>
+          <string>运算结果</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>

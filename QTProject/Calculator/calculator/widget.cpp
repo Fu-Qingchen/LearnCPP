@@ -13,12 +13,18 @@
 #include <QDir>
 #include <QDebug>
 
+#pragma execution_character_set("utf-8")    //解决中文显示乱码问题
+
 Widget::Widget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Widget)
 {
     ui->setupUi(this);
-    loadPlugins();
+    loadMathPlugins();
+    loadTimePlugins();
+    connect(m_timeInterface, SIGNAL(timer(QString)), this, SLOT(timerOut(QString)));
+    qDebug() << "finish connect";
+    m_timeInterface->run();
 }
 
 Widget::~Widget()
@@ -42,7 +48,7 @@ void Widget::updateUi()
         qDebug() << "finish set string";
         switch (m_mathInterface->isFunctionVaild()) {
         case -1:
-            ui->labelResult->setText("Division by 0 error");
+            ui->labelResult->setText("除数不能为0");
             break;
         case 0:
             ui->labelResult->setText("-");
@@ -57,18 +63,32 @@ void Widget::updateUi()
 }
 
 // https://doc.qt.io/qt-5/qtwidgets-tools-echoplugin-example.html
-void Widget::loadPlugins()
+void Widget::loadMathPlugins()
 {
     QPluginLoader pluginLoader("D:/Users/lenovo/Documents/GitHub/LearnCS/QTProject/Calculator/calculator/math_operator.dll");
     QObject *plugin = pluginLoader.instance();
     if (plugin) {
         m_mathInterface = qobject_cast<CMathOperatorInterface *>(plugin);
         if (m_mathInterface){
+            qDebug() << "load math plugin success";
             return ;
         }
         pluginLoader.unload();
     }
-    qDebug() << "load plugin success";
+}
+
+void Widget::loadTimePlugins()
+{
+    QPluginLoader pluginLoader("D:/Users/lenovo/Documents/GitHub/LearnCS/QTProject/Calculator/calculator/CTimeThread.dll");
+    QObject *plugin = pluginLoader.instance();
+    if (plugin) {
+        m_timeInterface = qobject_cast<CTimeThreadInterface *>(plugin);
+        if (m_timeInterface){
+            qDebug() << "load time plugin success";
+            return ;
+        }
+        pluginLoader.unload();
+    }
 }
 
 void Widget::on_pushButtonDot_clicked()
@@ -80,7 +100,7 @@ void Widget::on_pushButtonDot_clicked()
     }
     else
     {
-        ui->labelResult->setText(". usage error");
+        ui->labelResult->setText(". 使用错误");
     }
 }
 
@@ -311,7 +331,7 @@ void Widget::on_pushButtonLOP_clicked()
     }
     else if (function.at(size - 1).isDigit() || function.at(size - 1).toLatin1() == ')')
     {
-        ui->labelResult->setText("Enter * before (");
+        ui->labelResult->setText("请在 ( 前输入 *");
         return;
     }
     else
@@ -445,4 +465,10 @@ void Widget::keyPressEvent(QKeyEvent *event)
     default:
         break;
     }
+}
+
+void Widget::timerOut(QString dateTime)
+{
+    qDebug() << "run";
+    ui->label->setText(dateTime);
 }
